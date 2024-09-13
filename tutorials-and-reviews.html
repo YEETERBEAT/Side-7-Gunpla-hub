@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tutorials and Reviews - Side 7 Gundam Hub</title>
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-image: url('https://www.creativefabrica.com/wp-content/uploads/2022/05/17/Futuristic-Blue-Gradient-Background-Graphics-30683366-1.jpg');
+            background-size: cover;
+            background-attachment: fixed;
+            background-position: center;
+            color: #ffffff;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        header {
+            background-color: #0066cc; /* Changed from #ff0000 to #0066cc */
+            padding: 20px 0;
+            text-align: center;
+        }
+        h1 {
+            font-size: 2.5em;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+        nav {
+            background-color: #0066cc;
+            padding: 10px 0;
+        }
+        nav ul {
+            list-style-type: none;
+            padding: 0;
+            text-align: center;
+        }
+        nav ul li {
+            display: inline;
+            margin: 0 15px;
+        }
+        nav ul li a {
+            color: #ffffff;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        .content {
+            background-color: rgba(255, 255, 255, 0.1);
+            padding: 20px;
+            margin-top: 20px;
+            border-radius: 5px;
+        }
+        h2, h3 {
+            color: #ffcc00;
+        }
+        .video-container {
+            margin-bottom: 30px;
+        }
+        .video-player {
+            width: 100%;
+            max-width: 800px;
+            margin: 20px auto;
+            display: block;
+        }
+        .video-input {
+            margin: 20px 0;
+        }
+        .video-title {
+            margin-top: 10px;
+            font-weight: bold;
+        }
+        .video-description {
+            margin-top: 5px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Side 7 Gundam Hub</h1>
+    </header>
+    <nav>
+        <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="grades.html">Gunpla Grades</a></li>
+            <li><a href="techniques.html">Building Techniques</a></li>
+            <li><a href="resources.html">Resources</a></li>
+            <li><a href="tutorials-and-reviews.html">Tutorials and Reviews</a></li>
+            <li><a href="community.html">Community</a></li>
+        </ul>
+    </nav>
+    <div class="container">
+        <div class="content">
+            <h2>Gunpla Tutorials and Reviews</h2>
+            
+            <h3>Tutorials</h3>
+            <div class="video-container" id="tutorialContainer">
+                <input type="file" class="video-input" accept="video/mp4" data-type="tutorial">
+                <video class="video-player" controls>
+                    Your browser does not support the video tag.
+                </video>
+                <input type="text" class="video-title" placeholder="Enter tutorial title">
+                <textarea class="video-description" placeholder="Enter tutorial description"></textarea>
+            </div>
+            <button onclick="addVideoContainer('tutorial')">Add Another Tutorial</button>
+
+            <h3>Reviews</h3>
+            <div class="video-container" id="reviewContainer">
+                <input type="file" class="video-input" accept="video/mp4" data-type="review">
+                <video class="video-player" controls>
+                    Your browser does not support the video tag.
+                </video>
+                <input type="text" class="video-title" placeholder="Enter review title">
+                <textarea class="video-description" placeholder="Enter review description"></textarea>
+            </div>
+            <button onclick="addVideoContainer('review')">Add Another Review</button>
+        </div>
+    </div>
+    <script>
+        function handleFileSelect(event) {
+            const file = event.target.files[0];
+            const videoPlayer = event.target.nextElementSibling;
+            const fileURL = URL.createObjectURL(file);
+            videoPlayer.src = fileURL;
+        }
+
+        function addVideoContainer(type) {
+            const container = document.getElementById(`${type}Container`);
+            const newContainer = container.cloneNode(true);
+            newContainer.querySelector('.video-input').value = '';
+            newContainer.querySelector('.video-player').src = '';
+            newContainer.querySelector('.video-title').value = '';
+            newContainer.querySelector('.video-description').value = '';
+            container.parentNode.insertBefore(newContainer, container.nextSibling);
+            attachEventListeners();
+        }
+
+        function attachEventListeners() {
+            const videoInputs = document.querySelectorAll('.video-input');
+            videoInputs.forEach(input => {
+                input.addEventListener('change', handleFileSelect);
+            });
+        }
+
+        attachEventListeners();
+    </script>
+</body>
+</html>

@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Import Videos - Side 7 Gundam Hub</title>
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-image: url('https://www.creativefabrica.com/wp-content/uploads/2022/05/17/Futuristic-Blue-Gradient-Background-Graphics-30683366-1.jpg');
+            background-size: cover;
+            background-attachment: fixed;
+            background-position: center;
+            color: #ffffff;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        header {
+            background-color: #00c3ff;
+            padding: 20px 0;
+            text-align: center;
+        }
+        h1 {
+            font-size: 2.5em;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+        nav {
+            background-color: #0066cc;
+            padding: 10px 0;
+        }
+        nav ul {
+            list-style-type: none;
+            padding: 0;
+            text-align: center;
+        }
+        nav ul li {
+            display: inline;
+            margin: 0 15px;
+        }
+        nav ul li a {
+            color: #ffffff;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        .content {
+            background-color: rgba(255, 255, 255, 0.1);
+            padding: 20px;
+            margin-top: 20px;
+            border-radius: 5px;
+        }
+        h2, h3 {
+            color: #ffcc00;
+        }
+        .video-container {
+            margin-bottom: 30px;
+            border: 1px solid #ffcc00;
+            padding: 15px;
+            border-radius: 5px;
+        }
+        .video-player {
+            width: 100%;
+            max-width: 800px;
+            margin: 20px auto;
+            display: block;
+        }
+        .video-input {
+            margin: 20px 0;
+        }
+        .video-title, .video-category {
+            margin-top: 10px;
+            width: 100%;
+            padding: 5px;
+            background-color: rgba(255, 255, 255, 0.1);
+            border: 1px solid #ffcc00;
+            color: #ffffff;
+        }
+        .video-description {
+            margin-top: 5px;
+            width: 100%;
+            height: 100px;
+            padding: 5px;
+            background-color: rgba(255, 255, 255, 0.1);
+            border: 1px solid #ffcc00;
+            color: #ffffff;
+        }
+        button {
+            background-color: #ffcc00;
+            color: #000033;
+            border: none;
+            padding: 10px 20px;
+            margin-top: 10px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        button:hover {
+            background-color: #ffd700;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Side 7 Gundam Hub</h1>
+    </header>
+    <nav>
+        <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="grades.html">Gunpla Grades</a></li>
+            <li><a href="techniques.html">Building Techniques</a></li>
+            <li><a href="resources.html">Resources</a></li>
+            <li><a href="tutorials-and-reviews.html">Tutorials and Reviews</a></li>
+            <li><a href="import-videos.html">Import Videos</a></li>
+        </ul>
+    </nav>
+    <div class="container">
+        <div class="content">
+            <h2>Import Gunpla Videos</h2>
+            
+            <div class="video-container" id="videoContainer">
+                <input type="file" class="video-input" accept="video/mp4">
+                <video class="video-player" controls>
+                    Your browser does not support the video tag.
+                </video>
+                <input type="text" class="video-title" placeholder="Enter video title">
+                <select class="video-category">
+                    <option value="">Select a category</option>
+                    <option value="tutorial">Tutorial</option>
+                    <option value="review">Review</option>
+                    <option value="unboxing">Unboxing</option>
+                    <option value="custom">Custom Build</option>
+                    <option value="other">Other</option>
+                </select>
+                <textarea class="video-description" placeholder="Enter video description"></textarea>
+            </div>
+            <button onclick="addVideoContainer()">Add Another Video</button>
+            <button onclick="saveVideos()">Save All Videos</button>
+        </div>
+    </div>
+    <script>
+        function handleFileSelect(event) {
+            const file = event.target.files[0];
+            const videoPlayer = event.target.nextElementSibling;
+            const fileURL = URL.createObjectURL(file);
+            videoPlayer.src = fileURL;
+        }
+
+        function addVideoContainer() {
+            const container = document.getElementById('videoContainer');
+            const newContainer = container.cloneNode(true);
+            newContainer.querySelector('.video-input').value = '';
+            newContainer.querySelector('.video-player').src = '';
+            newContainer.querySelector('.video-title').value = '';
+            newContainer.querySelector('.video-category').value = '';
+            newContainer.querySelector('.video-description').value = '';
+            container.parentNode.insertBefore(newContainer, container.nextSibling);
+            attachEventListeners();
+        }
+
+        function attachEventListeners() {
+            const videoInputs = document.querySelectorAll('.video-input');
+            videoInputs.forEach(input => {
+                input.addEventListener('change', handleFileSelect);
+            });
+        }
+
+        function saveVideos() {
+            const videos = [];
+            const containers = document.querySelectorAll('.video-container');
+            containers.forEach(container => {
+                const video = {
+                    title: container.querySelector('.video-title').value,
+                    category: container.querySelector('.video-category').value,
+                    description: container.querySelector('.video-description').value,
+                    // Note: In a real application, you'd need to handle file uploads to a server here
+                    // For this example, we're just logging the file name
+                    fileName: container.querySelector('.video-input').files[0]?.name || 'No file selected'
+                };
+                videos.push(video);
+            });
+            console.log('Saved videos:', videos);
+            alert('Videos saved successfully! (Check console for details)');
+        }
+
+        attachEventListeners();
+    </script>
+</body>
+</html>

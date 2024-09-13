@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gunpla Community - Side 7 Gundam Hub</title>
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-image: url('https://example.com/different-background-image.jpg');
+            background-size: cover;
+            background-attachment: fixed;
+            background-position: center;
+            color: #000000;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        header {
+            background-color: #0066cc;
+            padding: 20px 0;
+            text-align: center;
+        }
+        h1 {
+            font-size: 2.5em;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+        nav {
+            background-color: #0066cc;
+            padding: 10px 0;
+        }
+        nav ul {
+            list-style-type: none;
+            padding: 0;
+            text-align: center;
+        }
+        nav ul li {
+            display: inline;
+            margin: 0 15px;
+        }
+        nav ul li a {
+            color: #ffffff;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        .content {
+            background-color: rgba(0, 0, 0, 0.7);
+            padding: 20px;
+            margin-top: 20px;
+            border-radius: 5px;
+        }
+        h2 {
+            color: #0066cc;
+        }
+        #chat-container {
+            height: 400px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            padding: 10px;
+            background-color: rgba(0, 0, 0, 0.5);
+            border-radius: 10px;
+        }
+        #chat-messages {
+            list-style-type: none;
+            padding: 0;
+        }
+        #chat-messages li {
+            margin-bottom: 10px;
+            max-width: 80%;
+            word-wrap: break-word;
+        }
+        .message-bubble {
+            display: inline-block;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 10px 15px;
+        }
+        #chat-messages li:nth-child(odd) .message-bubble {
+            background-color: rgba(0, 102, 204, 0.7); /* Light blue bubble */
+        }
+        #chat-messages li:nth-child(even) .message-bubble {
+            background-color: rgba(255, 204, 0, 0.7); /* Light yellow bubble */
+        }
+        .chat-image {
+            max-width: 200px;
+            max-height: 200px;
+            border-radius: 10px;
+            margin: 5px 0;
+        }
+        #chat-form {
+            display: flex;
+        }
+        #chat-input {
+            color: #000000;
+            background-color: #ffffff;
+            border: 1px solid #0066cc;
+            padding: 10px;
+            flex-grow: 1;
+        }
+        #chat-submit {
+            background-color: #0066cc;
+            color: #ffffff;
+            padding: 10px 20px;
+            border: none;
+            cursor: pointer;
+        }
+        #chat-submit:hover {
+            background-color: #0055aa;
+        }
+        .video-container {
+            margin-bottom: 20px;
+            padding: 10px;
+            background-color: rgba(255, 255, 255, 0.9);
+            border-radius: 5px;
+        }
+        .video-player {
+            width: 100%;
+            max-width: 640px;
+            margin-bottom: 10px;
+        }
+        #videoUploadForm {
+            margin-bottom: 20px;
+        }
+        #videoUploadForm input, #videoUploadForm textarea {
+            color: #000000;
+            background-color: #ffffff;
+            border: 1px solid #0066cc;
+            display: block;
+            width: 100%;
+            margin-bottom: 10px;
+            padding: 5px;
+        }
+        #videoUploadForm button {
+            background-color: #0066cc;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+        }
+        .image-container {
+            margin-bottom: 20px;
+            padding: 10px;
+            background-color: rgba(255, 255, 255, 0.9);
+            border-radius: 5px;
+        }
+        .uploaded-image {
+            max-width: 100%;
+            height: auto;
+            margin-bottom: 10px;
+        }
+        .chat-image {
+            max-width: 200px;
+            max-height: 200px;
+            margin: 5px 0;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Side 7 Gundam Hub</h1>
+    </header>
+    <nav>
+        <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="grades.html">Gunpla Grades</a></li>
+            <li><a href="techniques.html">Building Techniques</a></li>
+            <li><a href="resources.html">Resources</a></li>
+            <li><a href="tutorials-and-reviews.html">Tutorials and Reviews</a></li>
+            <li><a href="community.html">Community</a></li>
+        </ul>
+    </nav>
+    <div class="container">
+        <div class="content">
+            <h2>Gunpla Community Chat</h2>
+            <div id="chat-container">
+                <ul id="chat-messages"></ul>
+            </div>
+            <form id="chat-form">
+                <input type="text" id="chat-input" placeholder="Type your message here..." required>
+                <input type="file" id="imageFile" accept="image/*">
+                <button type="submit" id="chat-submit">Send</button>
+            </form>
+            <h3>Upload Video</h3>
+            <form id="videoUploadForm">
+                <input type="file" id="videoFile" accept="video/*" required>
+                <input type="text" id="videoTitle" placeholder="Video Title" required>
+                <textarea id="videoDescription" placeholder="Video Description"></textarea>
+                <button type="submit">Upload Video</button>
+            </form>
+            <div id="videoList"></div>
+        </div>
+    </div>
+    <input type="file" id="bgImageInput" accept="image/*" style="display: none;">
+    <button id="changeBgBtn" style="position: fixed; bottom: 20px; left: 20px; z-index: 1000; padding: 10px; background-color: #0066cc; color: white; border: none; border-radius: 5px; cursor: pointer;">
+        Change Background
+    </button>
+
+    <script>
+        const bgImageInput = document.getElementById('bgImageInput');
+        const changeBgBtn = document.getElementById('changeBgBtn');
+
+        function getAverageRGB(imgEl) {
+            const canvas = document.createElement('canvas');
+            const ctx = canvas.getContext('2d');
+            canvas.width = imgEl.width;
+            canvas.height = imgEl.height;
+            ctx.drawImage(imgEl, 0, 0);
+            const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+            const data = imageData.data;
+            let r = 0, g = 0, b = 0;
+            for (let i = 0; i < data.length; i += 4) {
+                r += data[i];
+                g += data[i+1];
+                b += data[i+2];
+            }
+            r = Math.floor(r / (data.length / 4));
+            g = Math.floor(g / (data.length / 4));
+            b = Math.floor(b / (data.length / 4));
+            return {r, g, b};
+        }
+
+        function isDark(r, g, b) {
+            return (r * 0.299 + g * 0.587 + b * 0.114) < 128;
+        }
+
+        function updateFontColor(imgSrc) {
+            const img = new Image();
+            img.onload = function() {
+                const {r, g, b} = getAverageRGB(img);
+                const isBackgroundDark = isDark(r, g, b);
+                const textColor = isBackgroundDark ? 'white' : 'black';
+                document.body.style.color = textColor;
+                document.body.style.fontWeight = '500';
+                document.querySelector('header').style.color = textColor;
+                document.querySelectorAll('nav a').forEach(link => {
+                    link.style.color = textColor;
+                });
+                document.querySelectorAll('h2, h3').forEach(heading => {
+                    heading.style.color = isBackgroundDark ? 'white' : '#0066cc';
+                });
+            };
+            img.src = imgSrc;
+        }
+
+        changeBgBtn.addEventListener('click', () => {
+            bgImageInput.click();
+        });
+
+        bgImageInput.addEventListener('change', (event) => {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    const imgSrc = e.target.result;
+                    document.body.style.backgroundImage = `url(${imgSrc})`;
+                    updateFontColor(imgSrc);
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+
+        // Chat functionality
+        const chatForm = document.getElementById('chat-form');
+        const chatInput = document.getElementById('chat-input');
+        const chatMessages = document.getElementById('chat-messages');
+
+        // Load saved messages from local storage
+        let messages = JSON.parse(localStorage.getItem('chatMessages')) || [];
+
+        // Display saved messages
+        function displayMessages() {
+            chatMessages.innerHTML = '';
+            messages.forEach((message, index) => {
+                const li = document.createElement('li');
+                if (message.type === 'text') {
+                    const bubble = document.createElement('span');
+                    bubble.className = 'message-bubble';
+                    bubble.textContent = message.content;
+                    li.appendChild(bubble);
+                } else if (message.type === 'image') {
+                    const img = document.createElement('img');
+                    img.src = message.content;
+                    img.alt = 'Uploaded image';
+                    img.className = 'chat-image';
+                    li.appendChild(img);
+                }
+                li.style.alignSelf = index % 2 === 0 ? 'flex-start' : 'flex-end';
+                chatMessages.appendChild(li);
+            });
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+
+        displayMessages();
+
+        chatForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            const messageText = chatInput.value.trim();
+            const imageFile = document.getElementById('imageFile').files[0];
+
+            if (messageText !== '' || imageFile) {
+                if (messageText !== '') {
+                    messages.push({ type: 'text', content: messageText });
+                }
+
+                if (imageFile) {
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        const imageURL = e.target.result;
+                        messages.push({ type: 'image', content: imageURL });
+                        localStorage.setItem('chatMessages', JSON.stringify(messages));
+                        displayMessages();
+                    };
+                    reader.readAsDataURL(imageFile);
+                } else {
+                    localStorage.setItem('chatMessages', JSON.stringify(messages));
+                    displayMessages();
+                }
+
+                chatInput.value = '';
+                document.getElementById('imageFile').value = ''; // Clear the file input
+            }
+        });
+
+        // Video upload and display functionality
+        const videoUploadForm = document.getElementById('videoUploadForm');
+        const videoList = document.getElementById('videoList');
+
+        // Load saved videos from local storage
+        let videos = JSON.parse(localStorage.getItem('uploadedVideos')) || [];
+
+        // Display saved videos
+        function displayVideos() {
+            videoList.innerHTML = '';
+            videos.forEach(video => {
+                addVideoToList(video.url, video.title, video.description);
+            });
+        }
+
+        displayVideos();
+
+        videoUploadForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            const videoFile = document.getElementById('videoFile').files[0];
+            const videoTitle = document.getElementById('videoTitle').value;
+            const videoDescription = document.getElementById('videoDescription').value;
+
+            if (videoFile) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const videoURL = e.target.result;
+                    videos.push({ url: videoURL, title: videoTitle, description: videoDescription });
+                    localStorage.setItem('uploadedVideos', JSON.stringify(videos));
+                    addVideoToList(videoURL, videoTitle, videoDescription);
+                    videoUploadForm.reset();
+                };
+                reader.readAsDataURL(videoFile);
+            }
+        });
+
+        function addVideoToList(videoURL, title, description) {
+            const videoContainer = document.createElement('div');
+            videoContainer.className = 'video-container';
+
+            const video = document.createElement('video');
+            video.className = 'video-player';
+            video.src = videoURL;
+            video.controls = true;
+
+            const titleElement = document.createElement('h3');
+            titleElement.textContent = title;
+
+            const descriptionElement = document.createElement('p');
+            descriptionElement.textContent = description;
+
+            videoContainer.appendChild(video);
+            videoContainer.appendChild(titleElement);
+            videoContainer.appendChild(descriptionElement);
+
+            videoList.insertBefore(videoContainer, videoList.firstChild);
+        }
+    </script>
+</body>
+</html>

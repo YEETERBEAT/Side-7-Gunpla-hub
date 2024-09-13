@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Side 7 Gundam Hub - Build Your Dream Mobile Suit</title>
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #000033;
+            background-image: url('https://www.creativefabrica.com/wp-content/uploads/2022/05/17/Futuristic-Blue-Gradient-Background-Graphics-30683366-1.jpg');
+            background-size: cover;
+            background-attachment: fixed;
+            background-position: center;
+            color: #ffffff;
+            margin: 0;
+            padding: 0;
+            transition: color 0.3s ease;
+            font-weight: 500;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        header {
+            background-color: #0066cc;
+            padding: 20px 0;
+            text-align: center;
+        }
+        h1 {
+            font-size: 2.5em;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-weight: 700;
+        }
+        nav {
+            background-color: #0066cc;
+            padding: 10px 0;
+        }
+        nav ul {
+            list-style-type: none;
+            padding: 0;
+            text-align: center;
+        }
+        nav ul li {
+            display: inline;
+            margin: 0 15px;
+        }
+        nav ul li a {
+            color: #ffffff;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        .content {
+            background-color: rgba(0, 0, 0, 0.7);
+            padding: 20px;
+            margin-top: 20px;
+            border-radius: 5px;
+        }
+        h2 {
+            color: #ffcc00;
+            font-weight: 600;
+        }
+        p, ul {
+            font-weight: 500;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Side 7 Gundam Hub</h1>
+    </header>
+    <nav>
+        <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="grades.html">Gunpla Grades</a></li>
+            <li><a href="techniques.html">Building Techniques</a></li>
+            <li><a href="customizing.html">Customizing</a></li>
+            <li><a href="scratch-building.html">Scratch Building</a></li>
+            <li><a href="painting.html">Painting</a></li>
+            <li><a href="weathering.html">Weathering</a></li>
+            <li><a href="dioramas.html">Dioramas</a></li>
+            <li><a href="resources.html">Resources</a></li>
+            <li><a href="tutorials-and-reviews.html">Tutorials and Reviews</a></li>
+            <li><a href="community.html">Community</a></li>
+            <li><a href="news.html">News</a></li>
+        </ul>
+    </nav>
+    <div class="container">
+        <div class="content">
+            <h2>Welcome to Side 7 Gundam Hub</h2>
+            <p>
+                Welcome to the world of Gunpla! Gunpla, short for "Gundam Plastic Model," is the art of assembling and customizing model kits based on the iconic Mobile Suits from the Gundam universe. Whether you're a complete beginner or looking to enhance your skills, this site will help you embark on your Gunpla journey.
+            </p>
+            <p>
+                To begin your Gunpla adventure, you'll need a few essential tools:
+            </p>
+            <ul>
+                <li>Nippers or side cutters for removing parts from runners</li>
+                <li>A hobby knife for cleaning up nub marks</li>
+                <li>Fine-grit sandpaper for smoothing surfaces</li>
+                <li>Tweezers for handling small parts and decals</li>
+            </ul>
+            <p>
+                When choosing your first kit, remember that the grade you start with is up to you. Entry Grade kits are the easiest to build, but High Grade (HG) kits are also great for beginners. It's important to note that the grade does not determine the quality of the kit. Each grade has its own merits and level of complexity.
+            </p>
+            <p>
+                Explore our other pages to learn more about Gunpla grades, building techniques, and helpful resources. Remember, becoming a Gunpla master takes time, patience, and practice. Don't be discouraged by setbacks – each build is an opportunity to learn and improve. Happy building, and may your Gunpla journey be filled with creativity and joy!
+            </p>
+        </div>
+    </div>
+
+    <input type="file" id="bgImageInput" accept="image/*" style="display: none;">
+    <button id="changeBgBtn" style="position: fixed; bottom: 20px; left: 20px; z-index: 1000; padding: 10px; background-color: #0066cc; color: white; border: none; border-radius: 5px; cursor: pointer;">
+        Change Background
+    </button>
+
+    <script>
+        const bgImageInput = document.getElementById('bgImageInput');
+        const changeBgBtn = document.getElementById('changeBgBtn');
+
+        function getAverageRGB(imgEl) {
+            const canvas = document.createElement('canvas');
+            const ctx = canvas.getContext('2d');
+            canvas.width = imgEl.width;
+            canvas.height = imgEl.height;
+            ctx.drawImage(imgEl, 0, 0);
+            const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+            const data = imageData.data;
+            let r = 0, g = 0, b = 0;
+            for (let i = 0; i < data.length; i += 4) {
+                r += data[i];
+                g += data[i+1];
+                b += data[i+2];
+            }
+            r = Math.floor(r / (data.length / 4));
+            g = Math.floor(g / (data.length / 4));
+            b = Math.floor(b / (data.length / 4));
+            return {r, g, b};
+        }
+
+        function isDark(r, g, b) {
+            return (r * 0.299 + g * 0.587 + b * 0.114) < 128;
+        }
+
+        function updateFontColor(imgSrc) {
+            const img = new Image();
+            img.onload = function() {
+                const {r, g, b} = getAverageRGB(img);
+                document.body.style.color = isDark(r, g, b) ? 'white' : 'black';
+            };
+            img.src = imgSrc;
+        }
+
+        changeBgBtn.addEventListener('click', () => {
+            bgImageInput.click();
+        });
+
+        bgImageInput.addEventListener('change', (event) => {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    const imgSrc = e.target.result;
+                    document.body.style.backgroundImage = `url(${imgSrc})`;
+                    localStorage.setItem('customBackground', imgSrc);
+                    updateFontColor(imgSrc);
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+
+        // Load custom background if it exists
+        window.addEventListener('load', () => {
+            const customBg = localStorage.getItem('customBackground');
+            if (customBg) {
+                document.body.style.backgroundImage = `url(${customBg})`;
+                updateFontColor(customBg);
+            }
+        });
+    </script>
+</body>
+</html>

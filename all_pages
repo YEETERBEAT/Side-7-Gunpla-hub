@@ -1,0 +1,85 @@
+<input type="file" id="bgImageInput" accept="image/*" style="display: none;">
+<button id="changeBgBtn" style="position: fixed; bottom: 20px; left: 20px; z-index: 1000; padding: 10px; background-color: #0066cc; color: white; border: none; border-radius: 5px; cursor: pointer;">
+    Change Background
+</button>
+
+<script>
+    const bgImageInput = document.getElementById('bgImageInput');
+    const changeBgBtn = document.getElementById('changeBgBtn');
+
+    function getAverageRGB(imgEl) {
+        const canvas = document.createElement('canvas');
+        const ctx = canvas.getContext('2d');
+        canvas.width = imgEl.width;
+        canvas.height = imgEl.height;
+        ctx.drawImage(imgEl, 0, 0);
+        const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+        const data = imageData.data;
+        let r = 0, g = 0, b = 0;
+        for (let i = 0; i < data.length; i += 4) {
+            r += data[i];
+            g += data[i+1];
+            b += data[i+2];
+        }
+        r = Math.floor(r / (data.length / 4));
+        g = Math.floor(g / (data.length / 4));
+        b = Math.floor(b / (data.length / 4));
+        return {r, g, b};
+    }
+
+    function isDark(r, g, b) {
+        return (r * 0.299 + g * 0.587 + b * 0.114) < 128;
+    }
+
+    function updateFontColor(imgSrc) {
+        const img = new Image();
+        img.onload = function() {
+            const {r, g, b} = getAverageRGB(img);
+            const textColor = isDark(r, g, b) ? 'white' : 'black';
+            document.body.style.color = textColor;
+            document.body.style.fontWeight = '500'; // Make the font bolder
+            
+            // Update header and navigation text color
+            document.querySelector('header').style.color = textColor;
+            document.querySelectorAll('nav a').forEach(link => {
+                link.style.color = textColor;
+            });
+            
+            // Update h2 and h3 colors for better contrast
+            document.querySelectorAll('h2, h3').forEach(heading => {
+                heading.style.color = isDark(r, g, b) ? '#ffcc00' : '#0066cc';
+            });
+        };
+        img.src = imgSrc;
+    }
+
+    changeBgBtn.addEventListener('click', () => {
+        bgImageInput.click();
+    });
+
+    bgImageInput.addEventListener('change', (event) => {
+        const file = event.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                const imgSrc = e.target.result;
+                document.body.style.backgroundImage = `url(${imgSrc})`;
+                localStorage.setItem('customBackground', imgSrc);
+                updateFontColor(imgSrc);
+            };
+            reader.readAsDataURL(file);
+        }
+    });
+
+    // Load custom background if it exists
+    window.addEventListener('load', () => {
+        const customBg = localStorage.getItem('customBackground');
+        if (customBg) {
+            document.body.style.backgroundImage = `url(${customBg})`;
+            updateFontColor(customBg);
+        } else {
+            // Set initial font weight if no custom background
+            document.body.style.fontWeight = '500';
+        }
+    });
+</script>
